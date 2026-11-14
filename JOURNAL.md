@@ -1,13 +1,13 @@
 ---
 title: "Liberty-Bot"
 author: "mohammedtouffeq-droid"
-description: "A stationary desktop AI companion robot with autofocus vision, voice interaction, and 4-DOF metal-gear servo kinematics"
-created_at: "2026-11-14"
+description: "A desktop study companion robot with autofocus camera vision, voice interaction, animated IPS eyes, and 4-DOF metal-gear servo arms"
+created_at: "2026-11-12"
 ---
 
-# November 14: Figuring out what is actually possible to build at home
+# November 12: Figuring out what is actually possible to build at home
 
-Today I spent a lot of time figuring out what kind of hardware project I could genuinely build from scratch without getting stuck halfway through.
+Spent time figuring out what kind of hardware project I could genuinely build from scratch without getting stuck halfway through.
 
 To be honest, my first thought was trying to build my own custom laptop or even a custom Android phone. I have been using an old Samsung phone for years, and when I take it to college, people often joke about how outdated it is. So at first I thought: why not use a hardware grant to build my own phone or laptop?
 
@@ -17,9 +17,9 @@ That realization actually helped me a lot. Instead of chasing something impossib
 
 ![Mechanical layout](images/mechanical_layout.png)
 
-**Total time spent: 3.5 hours**
+**Total time spent: 3 hours**
 
-# November 14: Selecting the parts and designing power isolation
+# November 13: Selecting the parts and designing power isolation
 
 Once I settled on building Liberty-Bot as a stationary desktop robot companion, my next worry was making sure the parts list was complete. I talked with my dad, and he agreed to help me assemble the mechanical brackets, baseplate, and wiring when the parts arrive. Because I do not have a box of spare screws, jumper wires, or extra power adapters sitting at home, missing even one small cable would stop the whole build.
 
@@ -35,7 +35,7 @@ Fourth, ordering domestically in India. Instead of ordering from US websites whe
 
 ![Wiring diagram](images/wiring_diagram.png)
 
-**Total time spent: 2.5 hours**
+**Total time spent: 3 hours**
 
 # November 14: Writing the initial Python control structure
 
@@ -43,6 +43,6 @@ While getting the repository ready for review, I wrote the foundational Python s
 
 `src/servo_controller.py` sets up the I2C connection to the PCA9685 board at address `0x40` and defines smooth movement functions for `nod_yes()`, `shake_no()`, `wave_hello()`, and `offer_handshake()`, moving the angles in small 2-degree steps so the robot does not jerk violently. `src/eye_display.py` uses Pygame to draw the two cyan robot eyes on the 3.5-inch screen, with states for blinking, looking around, thinking, and happy expressions during a handshake. `src/robot_core.py` ties the command handler, face expressions, and motor gestures together.
 
-![Wiring diagram](images/wiring_diagram.png)
+![Cover diagram](images/cover.png)
 
-**Total time spent: 1.5 hours**
+**Total time spent: 2 hours**
