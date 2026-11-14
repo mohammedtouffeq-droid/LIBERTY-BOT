@@ -37,12 +37,14 @@ Fourth, ordering domestically in India. Instead of ordering from US websites whe
 
 **Total time spent: 3 hours**
 
-# November 14: Writing the initial Python control structure
+# November 14: Modeling the 3D CAD enclosure, KiCad power board, and initial Python control structure
 
-While getting the repository ready for review, I wrote the foundational Python scripts in the `src/` folder so the software structure is ready to test as soon as the hardware arrives.
+While getting the repository ready for review, I modeled the 3D mechanical assembly (`hardware/cad/liberty_bot_assembly.step` and `hardware/cad/liberty_bot_enclosure.stl`) so that all parts fit together cleanly on the 160x160mm weighted baseplate without tipping forward when the right arm lifts up for a handshake. The torso enclosure holds the Raspberry Pi 5 and 3.5-inch IPS eye display up front, with side shoulder slots for the left and right MG90S metal-gear servos and a top pan-tilt neck bracket carrying the head visor and Camera Module 3. I also laid out a compact 2-layer KiCad distribution board (`hardware/pcb/liberty_bot_power_hat.kicad_pcb`) that bridges the Raspberry Pi I2C pins (`GPIO2`/`GPIO3`) to the PCA9685 controller while routing the external 5V 3A motor supply along wide 2.0mm copper traces with a 1000uF bulk capacitor.
 
-`src/servo_controller.py` sets up the I2C connection to the PCA9685 board at address `0x40` and defines smooth movement functions for `nod_yes()`, `shake_no()`, `wave_hello()`, and `offer_handshake()`, moving the angles in small 2-degree steps so the robot does not jerk violently. `src/eye_display.py` uses Pygame to draw the two cyan robot eyes on the 3.5-inch screen, with states for blinking, looking around, thinking, and happy expressions during a handshake. `src/robot_core.py` ties the command handler, face expressions, and motor gestures together.
+Alongside the hardware files, I wrote the foundational Python scripts in the `src/` folder so the software structure is ready to test as soon as the hardware arrives. `src/servo_controller.py` sets up the I2C connection to the PCA9685 board at address `0x40` and defines smooth movement functions for `nod_yes()`, `shake_no()`, `wave_hello()`, and `offer_handshake()`, moving the angles in small 2-degree steps so the robot does not jerk violently. `src/eye_display.py` uses Pygame to draw the two cyan robot eyes on the 3.5-inch screen, with states for blinking, looking around, thinking, and happy expressions during a handshake. `src/robot_core.py` ties the command handler, face expressions, and motor gestures together.
+
+![3D CAD Assembly Render](images/cad_assembly_render.png)
 
 ![Cover diagram](images/cover.png)
 
-**Total time spent: 2 hours**
+**Total time spent: 4 hours**
