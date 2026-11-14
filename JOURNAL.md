@@ -31,7 +31,7 @@ Second, plastic gears stripping in the servos. For the neck (looking left/right 
 
 Third, preventing Raspberry Pi reboots through power isolation. If four metal-gear servos pull current directly from the Raspberry Pi 5's 5V pin, the sudden voltage drop will reset the Pi or fry the GPIO header. To prevent this, I added a PCA9685 16-channel PWM driver board and a separate 5V 3A DC power supply just for the motors, while the Raspberry Pi 5 gets its own official 27W USB-C power adapter. The PCA9685 also gives me 12 extra motor slots so I can keep modifying and upgrading Liberty-Bot in the future.
 
-Fourth, ordering domestically in India. Instead of ordering from US websites where international shipping costs $60 and Indian customs charges heavy import taxes on delivery, I sourced every single item from Indian electronics distributors (Robu.in and Silverline Electronics). The total came out to Rs. 21,400 (~$254.76 USD), which leaves a safe buffer below the $300 ceiling and guarantees zero customs issues.
+Fourth, ordering domestically in India. Instead of ordering from US websites where international shipping costs $60 and Indian customs charges heavy import taxes on delivery, I sourced every single item from Indian electronics distributors (Robu.in and Silverline Electronics). The total came out to Rs. 18,090 (~$198.81 USD), which fits right inside the $200 Tier 2 ceiling and guarantees zero customs issues.
 
 ![Wiring diagram](images/wiring_diagram.png)
 
