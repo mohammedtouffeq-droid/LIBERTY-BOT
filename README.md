@@ -26,9 +26,15 @@ One of the biggest mistakes people make when building their first Raspberry Pi r
 
 To make sure my Raspberry Pi 5 stays completely safe, I designed the power system with two completely separate power adapters. The Raspberry Pi 5 gets its own official 27W USB-C power supply. Then, for the motors, I am using a dedicated PCA9685 16-channel PWM servo driver board connected to a separate 5V 3A DC power adapter. The Raspberry Pi only sends tiny I2C control signals (through the SDA and SCL pins) to tell the PCA9685 board what angle to move the motors to, while all the heavy motor current comes from the second adapter. Even better, because the PCA9685 board has 16 channels and I am only using 4 channels right now, I have 12 empty slots left over. That means whenever I want to upgrade Liberty-Bot in the future with moving fingers, waist rotation, or wheels, I can just plug new motors straight into the board without buying new driver hardware.
 
+## Mechanical Layout and Wiring Diagrams
+
+![Mechanical Assembly Layout](images/mechanical_layout.png)
+
+![Power Isolation and Wiring Schematic](images/wiring_diagram.png)
+
 ## Repository Contents
 
-* `BOM.md` contains the complete list of all 16 parts, screws, cables, and power supplies needed so nothing is missing during assembly, along with local Indian vendor pricing.
+* `bom.csv` and `BOM.md` contain the complete list of all 16 parts, screws, cables, and power supplies needed so nothing is missing during assembly, along with local Indian vendor links and pricing.
 * `CIRCUIT_DIAGRAM.md` explains the exact pin connections between the Raspberry Pi 5, the PCA9685 servo board, the audio module, camera, and power supplies.
 * `JOURNAL.md` tracks my design choices, why earlier ideas were dropped, and how I planned out the build.
 * `src/` contains the initial Python scripts for controlling the servo gestures, drawing the eyes, and running the voice and camera loop.

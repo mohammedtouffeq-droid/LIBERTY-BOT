@@ -1,0 +1,18 @@
+Item,Quantity,Unit Price (INR),Total Price (INR),Total Price (USD),Vendor,URL,Notes
+Raspberry Pi 5 (8GB RAM),1,8500,8500,101.20,Silverline Electronics,https://www.silverlineelectronics.in/collections/raspberry-pi-5,Main compute board
+Official Raspberry Pi 5 Active Cooler,1,600,600,7.15,Robu.in,https://robu.in/product/official-raspberry-pi-5-active-cooler/,Heatsink and PWM blower fan
+SanDisk Extreme 64GB A2 MicroSD Card,1,800,800,9.50,Robu.in,https://robu.in/product/sandisk-extreme-64gb-microsdxc-memory-card/,OS boot card
+Raspberry Pi Camera Module 3 (12MP Autofocus),1,2500,2500,29.75,Robu.in,https://robu.in/product/raspberry-pi-camera-module-3/,Motorized autofocus lens for reading close-up book pages
+30cm Raspberry Pi 5 Camera FPC Ribbon Cable,1,200,200,2.40,Robu.in,https://robu.in/product/raspberry-pi-5-official-camera-cable-300mm/,22-pin to 15-pin CSI cable for neck movement
+3.5-inch IPS Display Screen,1,2400,2400,28.55,Robu.in,https://robu.in/product/3-5-inch-ips-touch-screen-display-for-raspberry-pi/,Front display for animated eyes
+ReSpeaker 2-Mics Pi HAT,1,1500,1500,17.85,Robu.in,https://robu.in/product/respeaker-2-mics-pi-hat/,Dual microphone array and audio driver
+3W Chamber Stereo Speaker (JST 2.0),1,400,400,4.75,Robu.in,https://robu.in/product/stereo-enclosed-speaker-3w-8ohm/,Voice output speaker
+PCA9685 16-Channel 12-Bit PWM Servo Driver,1,450,450,5.35,Robu.in,https://robu.in/product/pca9685-16-channel-12-bit-pwm-servo-motor-driver-i2c-module/,I2C servo controller with isolated motor power
+MG90S Metal Gear Micro Servo,4,225,900,10.70,Robu.in,https://robu.in/product/towerpro-mg90s-metal-gear-micro-servo-motor/,2 for neck pan-tilt and 2 for left-right arms
+Official Raspberry Pi 27W USB-C Power Supply,1,1300,1300,15.50,Robu.in,https://robu.in/product/official-raspberry-pi-27w-usb-c-power-supply-black-india-plug/,5.1V 5A power supply for Pi 5
+5V 3A DC Power Supply Adapter,1,500,500,5.95,Robu.in,https://robu.in/product/5v-3a-power-adapter/,Dedicated power supply for servo motors
+Pan-Tilt and Arm Mounting Bracket Kit,1,900,900,10.70,Robu.in,https://robu.in/product/pan-tilt-camera-mount-bracket/,Mechanical brackets for head and arm joints
+120pc M2.5 and M3 Brass Standoff Screw Kit,1,450,450,5.35,Robu.in,https://robu.in/product/m3-nylon-hex-spacers-screw-nut-assortment-kit/,Hardware fasteners for board mounting
+120pc DuPont Jumper Wire Pack,1,300,300,3.55,Robu.in,https://robu.in/product/40-pin-dupont-cable-20cm/,M-F F-F and M-M wiring harness
+Weighted Desktop Baseplate with Rubber Feet,1,400,400,4.75,Robu.in,https://robu.in/product/acrylic-robot-chassis-base-plate/,Sturdy base for study desk stability
+TOTAL,,21400,21400,254.76,,,Total cost including GST and domestic shipping
