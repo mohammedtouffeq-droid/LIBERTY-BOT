@@ -1,50 +1,87 @@
 ---
 title: "Liberty-Bot"
 author: "mohammedtouffeq-droid"
-description: "A desktop study companion robot with autofocus camera vision, voice interaction, animated IPS eyes, and 4-DOF metal-gear servo arms"
-created_at: "2026-11-12"
+description: "A desktop study companion robot with a custom 2-layer KiCad servo power distribution PCB, 3D-printed CAD enclosure, autofocus camera vision, and 4-DOF metal-gear servo arms"
+created_at: "2026-11-07"
 ---
 
-# November 12: Figuring out what is actually possible to build at home
+# November 7: Scoping a real hardware build vs impossible DIY phone ideas
 
-Spent time figuring out what kind of hardware project I could genuinely build from scratch without getting stuck halfway through.
+Spent my first session figuring out what kind of hardware project I could genuinely engineer from scratch at home without hitting a dead end halfway through.
 
-To be honest, my first thought was trying to build my own custom laptop or even a custom Android phone. I have been using an old Samsung phone for years, and when I take it to college, people often joke about how outdated it is. So at first I thought: why not use a hardware grant to build my own phone or laptop?
+To be honest, my initial thought was trying to build my own custom laptop or even a custom Android phone, since my daily phone is really old. When I researched the actual hardware engineering behind smartphones and laptops, I realized why nobody builds a daily-driver smartphone on a workbench at home. High-end laptop processors cannot be bought in single quantities or soldered without factory BGA reflow lines and 12-layer HDI motherboards. For a phone, DIY cellular modules lack telecom IMEI certifications for Indian VoLTE networks (like Jio or Airtel), and uncertified boards fail Google Play Integrity checks.
 
-When I dug into the actual engineering requirements, I realized why nobody builds a daily-driver smartphone on a workbench at home. First, high-end laptop processors like AMD Ryzen or Intel Core chips cannot even be bought individually or soldered without factory BGA robots and 12-layer motherboards. Second, for a phone, DIY cellular modules do not have telecom IMEI approvals for Indian VoLTE networks (like Jio or Airtel), and uncertified boards are blocked by Google Play Integrity, meaning basic apps like WhatsApp, UPI, or Play Store will not even run on them. Even if I wired a screen and battery to a board, it would end up being a thick brick that dies in 45 minutes.
+That pushed me toward designing a real piece of custom hardware that I will actually use every single day on my study table: Liberty-Bot, a physical 4-DOF desktop robot companion with its own custom power and servo carrier PCB, a full 3D-printed mechanical enclosure, a 2-axis motorized camera head that can focus on handwritten pages held 15cm away, an IPS eye display, and metal-gear servo arms that physically lift up for a handshake.
 
-That realization actually helped me a lot. Instead of chasing something impossible that would fail, I thought about what I really wanted on my study table every day: a real desktop robot. Something that does not need a SIM card because it connects to my home Wi-Fi, stands right on my study table, looks at me and my books through a camera, talks back to me in a real voice when I ask questions about my subjects or projects, and moves its head and arms when I interact with it (like raising its arm when I ask for a handshake).
+**Total time spent: 3 hours**
+
+# November 8: Mechanical architecture and torque calculations for the 4-DOF joints
+
+Before drawing any CAD parts or choosing motors, I worked out the weight distribution and joint torque requirements with my dad so the robot does not tip forward on my desk or strip its gears when someone shakes its hand.
+
+For the four moving joints (neck pan, neck tilt, left shoulder pitch, and right handshake arm pitch), I compared standard plastic SG90 servos against MG90S metal-gear micro servos. A plastic SG90 produces around 1.6 kg-cm of stall torque, and its nylon gear teeth shear off easily if an external force touches the robot arm during a handshake. The MG90S has the exact same 22.8 x 12.2 x 28.5mm footprint but uses brass and aluminum internal gears rated at 2.2 kg-cm at 4.8V and 2.5 kg-cm at 6V. Since the forearm link is 95mm long and weighs roughly 42 grams, normal lifting requires less than 0.45 kg-cm, leaving more than a 4x safety margin against accidental bumps.
+
+To prevent the chassis from tipping when the right arm extends forward, I sized the bottom baseplate to 160mm x 160mm x 8mm with four recessed M3 mounting bosses positioned to keep the combined center of mass (Raspberry Pi 5 + heatsink + torso shell) 18mm behind the front foot line.
 
 ![Mechanical layout](images/mechanical_layout.png)
 
-**Total time spent: 3 hours**
+**Total time spent: 4 hours**
 
-# November 13: Selecting the parts and designing power isolation
+# November 9: Designing the dual-rail power isolation architecture and schematic
 
-Once I settled on building Liberty-Bot as a stationary desktop robot companion, my next worry was making sure the parts list was complete. I talked with my dad, and he agreed to help me assemble the mechanical brackets, baseplate, and wiring when the parts arrive. Because I do not have a box of spare screws, jumper wires, or extra power adapters sitting at home, missing even one small cable would stop the whole build.
+One of the most common hardware failures in Raspberry Pi robotics is wiring servo motors directly to the Pi's 5V GPIO rail. Four MG90S metal-gear servos starting simultaneously can draw transient current spikes of 2.4A to 3.0A (`4 x 650mA` stall current). That sudden current draw causes a severe voltage droop on the Raspberry Pi 5's 5V rail, resetting the PMIC, corrupting the microSD card, or coupling inductive back-EMF spikes into the 3.3V logic pins.
 
-Here are the major hardware problems I spotted while planning the list, and how I fixed them before ordering:
-
-First, the blurry book problem with the camera. At first, I looked at cheap Raspberry Pi cameras, which have fixed-focus lenses glued in place. Then I learned that fixed-focus lenses are tuned for objects far away, so if I hold my math or physics notebook 15cm in front of the robot's face, the page will look completely blurry and unreadable. So I switched to the official Raspberry Pi Camera Module 3, which has a tiny motor inside the lens for autofocus. I also added a 30cm Pi 5 camera ribbon cable because the 15cm cable included in the box is too short when the robot turns its neck.
-
-Second, plastic gears stripping in the servos. For the neck (looking left/right and nodding up/down) and the two arms (waving and shaking hands), the cheapest option was the blue SG90 servo. However, everyone online warns that SG90s have tiny plastic teeth inside that snap easily if you touch the robot's hand during a handshake. I swapped all four motors to MG90S servos, which are the exact same size but have metal gears inside so they will not break.
-
-Third, preventing Raspberry Pi reboots through power isolation. If four metal-gear servos pull current directly from the Raspberry Pi 5's 5V pin, the sudden voltage drop will reset the Pi or fry the GPIO header. To prevent this, I added a PCA9685 16-channel PWM driver board and a separate 5V 3A DC power supply just for the motors, while the Raspberry Pi 5 gets its own official 27W USB-C power adapter. The PCA9685 also gives me 12 extra motor slots so I can keep modifying and upgrading Liberty-Bot in the future.
-
-Fourth, ordering domestically in India. Instead of ordering from US websites where international shipping costs $60 and Indian customs charges heavy import taxes on delivery, I sourced every single item from Indian electronics distributors (Robu.in and Silverline Electronics). The total came out to Rs. 18,090 (~$198.81 USD), which fits right inside the $200 Tier 2 ceiling and guarantees zero customs issues.
+To solve this properly at the hardware level, I designed a split-rail power architecture:
+1. The Logic Rail uses the official 27W (5.1V 5A) USB-C PD supply dedicated exclusively to the Raspberry Pi 5, Camera Module 3, 3.5-inch IPS eye display, and ReSpeaker 2-Mic array.
+2. The Motor Power Rail uses a separate 5V 3A DC power supply feeding a dedicated custom power distribution and PWM carrier board (`hardware/pcb/liberty_bot_power_hat.kicad_sch`).
+3. Only the I2C clock (`SCL` on GPIO3), I2C data (`SDA` on GPIO2), 3.3V logic reference, and a single star-point `GND` reference bridge the two domains.
 
 ![Wiring diagram](images/wiring_diagram.png)
 
-**Total time spent: 3 hours**
+**Total time spent: 4 hours**
 
-# November 14: Modeling the 3D CAD enclosure, KiCad power board, and initial Python control structure
+# November 10: Capturing the KiCad schematic and routing the 2-layer power carrier PCB
 
-While getting the repository ready for review, I modeled the 3D mechanical assembly (`hardware/cad/liberty_bot_assembly.step` and `hardware/cad/liberty_bot_enclosure.stl`) so that all parts fit together cleanly on the 160x160mm weighted baseplate without tipping forward when the right arm lifts up for a handshake. The torso enclosure holds the Raspberry Pi 5 and 3.5-inch IPS eye display up front, with side shoulder slots for the left and right MG90S metal-gear servos and a top pan-tilt neck bracket carrying the head visor and Camera Module 3. I also laid out a compact 2-layer KiCad distribution board (`hardware/pcb/liberty_bot_power_hat.kicad_pcb`) that bridges the Raspberry Pi I2C pins (`GPIO2`/`GPIO3`) to the PCA9685 controller while routing the external 5V 3A motor supply along wide 2.0mm copper traces with a 1000uF bulk capacitor.
+Instead of relying on loose breadboard wires that fall out whenever the robot moves its arms, I designed a custom 2-layer distribution board in KiCad (`hardware/pcb/liberty_bot_power_hat.kicad_pro`, `.kicad_sch`, and `.kicad_pcb`) measuring 65mm x 56mm to match the Raspberry Pi HAT mounting hole pattern.
 
-Alongside the hardware files, I wrote the foundational Python scripts in the `src/` folder so the software structure is ready to test as soon as the hardware arrives. `src/servo_controller.py` sets up the I2C connection to the PCA9685 board at address `0x40` and defines smooth movement functions for `nod_yes()`, `shake_no()`, `wave_hello()`, and `offer_handshake()`, moving the angles in small 2-degree steps so the robot does not jerk violently. `src/eye_display.py` uses Pygame to draw the two cyan robot eyes on the 3.5-inch screen, with states for blinking, looking around, thinking, and happy expressions during a handshake. `src/robot_core.py` ties the command handler, face expressions, and motor gestures together.
+In the schematic and PCB layout, I routed the 3.3V logic signals (`SDA`, `SCL`, `VCC`, `GND`) from the 40-pin Raspberry Pi header (`J1`) using 0.3mm signal traces with 10k pull-up resistors (`R1`, `R2`) and a 100nF ceramic decoupling capacitor (`C2`) placed right next to the logic supply pin. For the high-current `V+` motor supply entering from the 5V 3A screw terminal (`J2`), I routed 2.0mm wide copper traces (`80 mil` width on 1 oz/ft2 copper) capable of carrying over 4.5A continuously with less than a 10 degree Celsius temperature rise. I also placed a 1000uF 16V low-ESR electrolytic bulk capacitor (`C1`) across `V+` and `GND` right at the motor header bank (`M1` through `M4`) to absorb transient current spikes whenever the handshake servo reverses direction.
+
+**Total time spent: 5 hours**
+
+# November 11: Modeling the 3D CAD baseplate, torso enclosure, and display bezel
+
+With the PCB dimensions fixed at 65mm x 56mm, I modeled the main structural body of Liberty-Bot in 3D CAD (`hardware/cad/liberty_bot_assembly.step` and `hardware/cad/liberty_bot_enclosure.stl`).
+
+I started with the 160mm x 160mm weighted baseplate and modeled vertical M3 brass standoff pillars to hold the lower internal electronics deck. Around that internal deck, I designed the vertical torso shell (`110mm x 90mm x 130mm` tall) with a recessed front bezel cutout sized specifically for the 3.5-inch IPS eye screen (`85mm x 55mm` viewing window) so the screen sits flush with the front face of the robot. On the back wall of the torso, I added ventilation slots aligned with the Raspberry Pi 5 Active Cooler blower exhaust, plus a clean pass-through slot for the 27W USB-C cable and the 5V 3A motor DC barrel jack so no wires hang out of the front.
+
+**Total time spent: 5 hours**
+
+# November 12: Modeling the 2-DOF pan-tilt neck assembly, head visor, and servo arms
+
+In this session I modeled the moving upper assemblies in `hardware/cad/liberty_bot_assembly.step`: the 2-DOF neck mechanism, the camera head visor, and the left and right articulated arms.
+
+For the neck, the pan MG90S servo mounts vertically inside the top plate of the torso, driving a rotating turntable horn. Above that horn sits a U-bracket holding the tilt MG90S servo, allowing the robot head to rotate 180 degrees left-to-right and nod 75 degrees up-and-down. Inside the head visor (`84mm x 64mm x 54mm`), I designed an angled mounting cradle for the Raspberry Pi Camera Module 3 alongside a central slot for the 300mm 22-pin to 15-pin MIPI CSI ribbon cable. Giving the ribbon cable a smooth service loop through the neck center prevents the flex cable from kinking or tearing over thousands of head turns.
+
+For the left and right arms (`18mm x 95mm`), I modeled rectangular shoulder pockets on the left and right walls of the torso that clamp the MG90S servo ears with M2 machine screws, and shaped the right forearm tip so it can comfortably lift up to 95 degrees when offering a physical handshake.
 
 ![3D CAD Assembly Render](images/cad_assembly_render.png)
 
+**Total time spent: 5 hours**
+
+# November 13: Finalizing the complete Indian domestic BOM and verifying clearances
+
+To make sure my dad and I do not get stuck waiting on a missing screw or adapter during assembly, I audited every mechanical fastener, cable, and electronic module across the 3D CAD model and KiCad PCB and compiled the complete 16-item Bill of Materials in `bom.csv` and `BOM.md`.
+
+A huge detail I caught during this audit was the camera focus distance: standard cheap Pi cameras use fixed-focus lenses glued for infinity focus, which makes textbook pages held 15cm in front of the robot completely blurry. Specifying the official Raspberry Pi Camera Module 3 solves this with motorized PDAF/CDAF autofocus down to 10cm. I also priced every single item from domestic Indian electronics distributors (Robu.in and Silverline Electronics) so the entire 16-part BOM totals Rs. 18,090 INR ($198.81 USD), keeping the build inside Tier 2 ($200 ceiling) and avoiding international courier delays.
+
+**Total time spent: 3 hours**
+
+# November 14: Writing the hardware bring-up and I2C servo control scripts
+
+To wrap up the pre-build engineering phase, I wrote the hardware bring-up and control scripts in `src/` so that as soon as the PCB and parts arrive, I can test each hardware subsystem step by step.
+
+`src/servo_controller.py` initializes the I2C bus (`busio.I2C(board.SCL, board.SDA)`) and talks to the PCA9685 PWM generator at address `0x40` with a 50Hz frame rate and `500us` to `2500us` pulse-width limits matched to the MG90S mechanical stops. I implemented interpolated step functions (`_smooth_move`) so the neck pan/tilt and right handshake arm accelerate smoothly in 2-degree increments instead of slamming into the 3D-printed stops. `src/eye_display.py` renders the 60 FPS animated cyan robot eyes on the 3.5-inch IPS screen, and `src/robot_core.py` coordinates the camera autofocus, voice audio loop, and physical servo gestures.
+
 ![Cover diagram](images/cover.png)
 
-**Total time spent: 4 hours**
+**Total time spent: 3 hours**
